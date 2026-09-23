@@ -1,0 +1,28 @@
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  scroll-behavior: smooth;
+}
+
+@font-face {
+  font-family: "Alan Sans";
+  src: url("../public/fonts/AlanSans-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Alan Sans";
+  src: url("../public/fonts/AlanSans-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  margin: 0;
+  font-family: "Alan Sans", sans-serif;
+}
