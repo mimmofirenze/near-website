@@ -2,15 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./App.css";
-import appleLogo from "./assets/apple-logo-dark.png";
-import appleLogoLight from "./assets/apple-logo-light.png";
-import playStoreLogo from "./assets/google-play-store-logo-png-transparent.png";
-import logoLong from "./assets/near-logo-long-light.png";
-import logo from "./assets/near-logo-light.png";
-import homeScreen from "./assets/near-home.jpg";
-import profileScreen from "./assets/near-profile.jpg";
-import friendsScreen from "./assets/near-friends.jpg";
-import qrScreen from "./assets/near-qr.jpg";
 import { supabase } from "./lib/supabase";
 
 const RELEASE_DATE = new Date("2026-10-17T00:00:00");
@@ -49,7 +40,7 @@ function Navbar({
           });
         }}
       >
-        <img className="logo" src={logo} alt="Near" />
+        <img className="logo" src="https://pub-f87a061974ae427789e792fb6de0544d.r2.dev/near-logo-light.png" alt="Near" />
       </a>
 
       <div className="nav-links">
@@ -432,7 +423,7 @@ function App() {
           }}
         >
 
-          <img className="hero-logo" src={logoLong} alt="" />
+          <img className="hero-logo" src="https://pub-f87a061974ae427789e792fb6de0544d.r2.dev/near-logo-long-light.png" alt="" />
 
           <div className="countdown">
             <div className="time">
@@ -478,7 +469,7 @@ function App() {
           <p className="launch-date">COMING OCTOBER 17, 2026 ON:</p>
           <div className="store-buttons">
             <div className="store-button">
-              <img className="apple-logo" src={appleLogo} alt="" />
+              <img className="apple-logo" src="https://pub-f87a061974ae427789e792fb6de0544d.r2.dev/apple-logo-dark.png" alt="" />
 
               <span>
                 <strong>App Store</strong>
@@ -486,7 +477,7 @@ function App() {
             </div>
 
             <div className="store-button">
-              <img className="play-store-logo" src={playStoreLogo} alt="" />
+              <img className="play-store-logo" src="https://pub-f87a061974ae427789e792fb6de0544d.r2.dev/google-play-store-logo-png-transparent.png" alt="" />
 
               <span>
                 <strong>Google Play</strong>
@@ -584,19 +575,19 @@ function App() {
                 <div className="phone-face phone-front">
                   <div className="phone-screen">
                     <div ref={splashRef} className="phone-screen-state phone-splash">
-                      <img src={logoLong} className="phone-splash-logo" alt="Near" />
+                      <img src="https://pub-f87a061974ae427789e792fb6de0544d.r2.dev/near-logo-long-light.png" className="phone-splash-logo" alt="Near" />
                     </div>
                     <div ref={homeScreenRef} className="phone-screen-state phone-home">
-                      <img src={homeScreen} className="phone-home-image" alt="Near Home map" />
+                      <img src="https://pub-f87a061974ae427789e792fb6de0544d.r2.dev/near-home.jpg" className="phone-home-image" alt="Near Home map" />
                     </div>
                     <div ref={profileScreenRef} className="phone-screen-state phone-profile">
-                      <img src={profileScreen} className="phone-screen-image" alt="Near profile" />
+                      <img src="https://pub-f87a061974ae427789e792fb6de0544d.r2.dev/near-profile.jpg" className="phone-screen-image" alt="Near profile" />
                     </div>
                     <div ref={friendsScreenRef} className="phone-screen-state phone-friends">
-                      <img src={friendsScreen} className="phone-screen-image" alt="Near friends" />
+                      <img src="https://pub-f87a061974ae427789e792fb6de0544d.r2.dev/near-friends.jpg" className="phone-screen-image" alt="Near friends" />
                     </div>
                     <div ref={qrScreenRef} className="phone-screen-state phone-qr">
-                      <img src={qrScreen} className="phone-screen-image" alt="Near QR code" />
+                      <img src="https://pub-f87a061974ae427789e792fb6de0544d.r2.dev/near-qr.jpg" className="phone-screen-image" alt="Near QR code" />
                     </div>
                   </div>
                 </div>
@@ -607,7 +598,7 @@ function App() {
                     <span className="phone-camera" />
                     <span className="phone-flash" />
                   </div>
-                  <img src={logo} className="phone-back-logo" alt="" />
+                  <img src="https://pub-f87a061974ae427789e792fb6de0544d.r2.dev/near-logo-light.png" className="phone-back-logo" alt="" />
                 </div>
               </div>
             </div>
@@ -647,11 +638,11 @@ function App() {
                 <p className="about-kicker">SOON AVAILABLE ON</p>
                 <div className="release-store-buttons">
                   <div className="release-store-button">
-                    <img className="apple-logo" src={appleLogoLight} alt="" />
+                    <img className="apple-logo" src="https://pub-f87a061974ae427789e792fb6de0544d.r2.dev/apple-logo-light.png" alt="" />
                     <span><strong>App Store</strong></span>
                   </div>
                   <div className="release-store-button">
-                    <img className="play-store-logo" src={playStoreLogo} alt="" />
+                    <img className="play-store-logo" src="https://pub-f87a061974ae427789e792fb6de0544d.r2.dev/google-play-store-logo-png-transparent.png" alt="" />
                     <span><strong>Google Play</strong></span>
                   </div>
                 </div>
