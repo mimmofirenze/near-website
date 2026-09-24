@@ -793,19 +793,21 @@ a {
 .site-credit {
   position: absolute;
   left: 50%;
-  bottom: 18px;
+  bottom: 6px;
   transform: translateX(-50%);
   z-index: 10;
 
-  font-size: 8px;
+  font-size: 6px;
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   white-space: nowrap;
-  color: rgba(17, 17, 17, 0.28);
+
+  color: rgba(17, 17, 17, 0.22);
 }
 
 .site-credit a {
-  color: rgba(17, 17, 17, 0.48);
+  color: rgba(17, 17, 17, 0.38);
   transition: color 180ms ease;
 }
 
