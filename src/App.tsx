@@ -658,7 +658,7 @@ function App() {
           <footer ref={creditRef} className="site-credit">
             Developed by{" "}
             <a
-              href="https://kevincaulo"
+              href="https://kevincaulo.com"
               target="_blank"
               rel="noopener noreferrer"
             >
