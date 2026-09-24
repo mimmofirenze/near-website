@@ -1083,16 +1083,17 @@ a {
   }
 
   .about-inner {
-    grid-template-rows: auto 1fr auto;
-    gap: 10px;
+    grid-template-rows: auto auto auto;
+    gap: 14px;
+    align-content: center;
   }
 
   .about-copy-stack {
-    min-height: 105px;
+    min-height: 90px;
   }
 
   .about-description-stack {
-    min-height: 70px;
+    min-height: 62px;
   }
 
   .about-kicker {
@@ -1107,6 +1108,7 @@ a {
 
   .phone-scene {
     width: min(35vw, 155px);
+    margin: 20px 0;
   }
 
   .phone-face {
