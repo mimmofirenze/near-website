@@ -650,22 +650,7 @@ function App() {
             </div>
           </div>
         </div>
-        <div className="about-sticky">
-          <div className="about-inner">
-            {/* all your existing content */}
-          </div>
-
-          <footer ref={creditRef} className="site-credit">
-            Developed by{" "}
-            <a
-              href="https://kevincaulo.com"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              KC WebSolutions
-            </a>
-          </footer>
-        </div>
+        
       </section>
     </main>
   );
