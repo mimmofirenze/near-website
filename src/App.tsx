@@ -4,7 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./App.css";
 import { supabase } from "./lib/supabase";
 
-const RELEASE_DATE = new Date("2026-10-17T00:00:00");
+const RELEASE_DATE = new Date("2026-12-7T00:00:00");
 
 function getTimeLeft() {
   const difference = Math.max(RELEASE_DATE.getTime() - Date.now(), 0);
