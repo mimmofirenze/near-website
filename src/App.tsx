@@ -466,7 +466,7 @@ function App() {
         </div>*/}
 
         <div className="bottom-right">
-          <p className="launch-date">COMING OCTOBER 17, 2026 ON:</p>
+          <p className="launch-date">COMING DECEMBER 7, 2026 ON:</p>
           <div className="store-buttons">
             <div className="store-button">
               <img className="apple-logo" src="https://pub-f87a061974ae427789e792fb6de0544d.r2.dev/apple-logo-dark.png" alt="" />
