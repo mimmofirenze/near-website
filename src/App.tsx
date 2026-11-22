@@ -3,6 +3,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import "./App.css";
 import { supabase } from "./lib/supabase";
+import PrivacyNotice from "./PrivacyNotice";
 
 const RELEASE_DATE = new Date("2026-12-07T00:00:00");
 
@@ -73,6 +74,8 @@ function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const aboutRef = useRef<HTMLElement>(null);
   const phoneRef = useRef<HTMLDivElement>(null);
+  const phoneSceneRef = useRef<HTMLDivElement>(null);
+  const leftCopyColumnRef = useRef<HTMLDivElement>(null);
   const introCopyRef = useRef<HTMLDivElement>(null);
   const homeCopyRef = useRef<HTMLDivElement>(null);
   const profileCopyRef = useRef<HTMLDivElement>(null);
@@ -91,23 +94,40 @@ function App() {
   const friendsScreenRef = useRef<HTMLDivElement>(null);
   const qrScreenRef = useRef<HTMLDivElement>(null);
   const creditRef = useRef<HTMLElement>(null);
+  const introArrowRef = useRef<HTMLButtonElement>(null);
   const [aboutTop, setAboutTop] = useState(
     typeof window !== "undefined" ? window.innerHeight : 0
   );
 
-  const scrollToHowItWorks = () => {
-  if (!aboutRef.current) return;
+const scrollToHowItWorks = () => {
+  const trigger = ScrollTrigger.getAll().find(
+    (st) => st.trigger === aboutRef.current
+  );
 
-  const about = aboutRef.current;
+  if (!trigger) {
+    console.warn("Near: About ScrollTrigger not found");
+    return;
+  }
 
-  const start = about.offsetTop;
-  const scrollableDistance =
-    about.offsetHeight - window.innerHeight;
+  const target = trigger.labelToScroll("homeVisible");
 
-  const homeProgress = 0.27;
+  console.log("Scrolling to Home:", target);
 
   window.scrollTo({
-    top: start + scrollableDistance * homeProgress,
+    top: target,
+    behavior: "smooth",
+  });
+};
+
+const scrollToChapter = (label: string) => {
+  const trigger = ScrollTrigger.getAll().find(
+    (st) => st.trigger === aboutRef.current
+  );
+
+  if (!trigger) return;
+
+  window.scrollTo({
+    top: trigger.labelToScroll(label),
     behavior: "smooth",
   });
 };
@@ -184,12 +204,16 @@ function App() {
 
       const tl = gsap.timeline({
         scrollTrigger: {
+          id: "near-about",
           trigger: aboutRef.current,
           start: "top top",
           end: "bottom bottom",
           scrub: 1,
+          invalidateOnRefresh: true,
         },
       });
+
+      tl.addLabel("introVisible", 0);
 
       // 1. Reveal the phone: back -> front.
       tl.fromTo(
@@ -200,6 +224,81 @@ function App() {
 
       // Small pause on the Near splash before the app loads.
       tl.to({}, { duration: 0.35 });
+
+      // Fade out the introduction arrow before the phone moves
+      tl.to(
+        introArrowRef.current,
+        {
+          autoAlpha: 0,
+          duration: 0.35,
+          ease: "none",
+        }
+      );
+      
+      // Calculate the actual centers of the CSS Grid columns
+      const getSwapOffsets = () => {
+        const grid = aboutRef.current?.querySelector<HTMLElement>(".about-inner");
+        const phone = phoneSceneRef.current;
+        const heading = leftCopyColumnRef.current;
+
+        if (!grid || !phone || !heading || window.innerWidth < 1024) {
+          return { phoneX: 0, headingX: 0 };
+        }
+
+        const gridRect = grid.getBoundingClientRect();
+        const style = window.getComputedStyle(grid);
+
+        const columns = style.gridTemplateColumns
+          .split(/\s+/)
+          .map(parseFloat);
+
+        const gap = parseFloat(style.columnGap) || 0;
+
+        const leftColumnCenter =
+          gridRect.left + columns[0] / 2;
+
+        const middleColumnCenter =
+          gridRect.left + columns[0] + gap + columns[1] / 2;
+
+        // Remove any existing GSAP translation from measurements
+        const phoneRect = phone.getBoundingClientRect();
+        const headingRect = heading.getBoundingClientRect();
+
+        const phoneCenter =
+          phoneRect.left + phoneRect.width / 2 -
+          Number(gsap.getProperty(phone, "x"));
+
+        const headingCenter =
+          headingRect.left + headingRect.width / 2 -
+          Number(gsap.getProperty(heading, "x"));
+
+        return {
+          phoneX: leftColumnCenter - phoneCenter,
+          headingX: middleColumnCenter - headingCenter,
+        };
+      };
+
+      tl.to(
+        phoneSceneRef.current,
+        {
+          x: () => getSwapOffsets().phoneX,
+          duration: 1.1,
+          ease: "none",
+        },
+        "shiftColumns"
+      );
+
+      tl.to(
+        leftCopyColumnRef.current,
+        {
+          x: () => getSwapOffsets().headingX,
+          duration: 1.1,
+          ease: "none",
+        },
+        "shiftColumns"
+      );
+
+
 
       // 2. Splash -> Home, while both text columns change with it.
       tl.to(splashRef.current, { autoAlpha: 0, scale: 0.97, duration: 0.45 }, "home");
@@ -223,6 +322,8 @@ function App() {
         "home+=0.22"
       );
 
+      tl.addLabel("homeVisible", "home+=0.75");
+
       // Give Home a moment before moving into the profile chapter.
       tl.to({}, { duration: 0.55 });
 
@@ -239,6 +340,8 @@ function App() {
 
       tl.to(homeDescriptionRef.current, { autoAlpha: 0, y: -18, duration: 0.35 }, "profile");
       tl.to(profileDescriptionRef.current, { autoAlpha: 1, y: 0, duration: 0.5 }, "profile+=0.22");
+
+      tl.addLabel("profileVisible", "profile+=0.75");
 
       // Hold the Profile state before moving into Friends.
       tl.to({}, { duration: 0.55 });
@@ -257,6 +360,8 @@ function App() {
       tl.to(profileDescriptionRef.current, { autoAlpha: 0, y: -18, duration: 0.35 }, "friends");
       tl.to(friendsDescriptionRef.current, { autoAlpha: 1, y: 0, duration: 0.5 }, "friends+=0.22");
 
+      tl.addLabel("friendsVisible", "friends+=0.75");
+
       // Hold Friends before the final QR chapter.
       tl.to({}, { duration: 0.55 });
 
@@ -274,6 +379,8 @@ function App() {
       tl.to(friendsDescriptionRef.current, { autoAlpha: 0, y: -18, duration: 0.35 }, "qr");
       tl.to(qrDescriptionRef.current, { autoAlpha: 1, y: 0, duration: 0.5 }, "qr+=0.22");
 
+      tl.addLabel("chatVisible", "qr+=0.75");
+
       // Let the QR chapter breathe before the final release state.
       tl.to({}, { duration: 0.55 });
 
@@ -290,6 +397,9 @@ function App() {
       tl.to(splashRef.current, { autoAlpha: 1, scale: 1, duration: 0.55 }, "launch");
       tl.to(releaseCopyRef.current, { autoAlpha: 1, y: 0, duration: 0.55 }, "launch+=0.12");
       tl.to(releaseDescriptionRef.current, { autoAlpha: 1, y: 0, duration: 0.55 }, "launch+=0.12");
+
+      tl.addLabel("releaseVisible", "launch+=0.75");
+
       tl.to(creditRef.current, { autoAlpha: 1, y: 0, duration: 0.55 }, "launch+=0.12");
 
       // Hold the launch state before the pinned About section releases.
@@ -501,7 +611,10 @@ function App() {
       <section ref={aboutRef} className="about" id="about">
         <div className="about-sticky">
           <div className="about-inner">
-            <div className="about-copy about-copy-left about-copy-stack">
+            <div
+              ref={leftCopyColumnRef}
+              className="about-copy about-copy-left about-copy-stack"
+            >
               <div ref={introCopyRef} className="about-copy-state">
                 <p className="about-kicker">WHAT IS NEAR?</p>
                 <h2 className="about-title">
@@ -511,45 +624,128 @@ function App() {
                   <br />
                   AGAIN.
                 </h2>
+                <button
+                  ref={introArrowRef}
+                  type="button"
+                  className="chapter-next"
+                  onClick={() => scrollToChapter("homeVisible")}
+                  aria-label="Go to Home"
+                >
+                  ↓
+                </button>
               </div>
 
               <div ref={homeCopyRef} className="about-copy-state">
+                <button
+                  type="button"
+                  className="chapter-prev"
+                  onClick={() => scrollToChapter("introVisible")}
+                  aria-label="Go to introduction"
+                >
+                  ↑
+                </button>
+
                 <p className="about-kicker">HOME</p>
+
                 <h2 className="about-title">
                   SEE WHO'S
                   <br />
                   NEAR.
                 </h2>
+                <button
+                  type="button"
+                  className="chapter-next"
+                  onClick={() => scrollToChapter("profileVisible")}
+                  aria-label="Go to Profile"
+                >
+                  ↓
+                </button>
               </div>
 
               <div ref={profileCopyRef} className="about-copy-state">
+                <button
+                  type="button"
+                  className="chapter-prev"
+                  onClick={() => scrollToChapter("homeVisible")}
+                  aria-label="Go to Home"
+                >
+                  ↑
+                </button>
                 <p className="about-kicker">PROFILE</p>
                 <h2 className="about-title">
                   YOUR JOURNEY.
                   <br />
                   YOUR STORY.
                 </h2>
+                <button
+                  type="button"
+                  className="chapter-next"
+                  onClick={() => scrollToChapter("friendsVisible")}
+                  aria-label="Go to Friends"
+                >
+                  ↓
+                </button>
               </div>
 
               <div ref={friendsCopyRef} className="about-copy-state">
+                <button
+                  type="button"
+                  className="chapter-prev"
+                  onClick={() => scrollToChapter("profileVisible")}
+                  aria-label="Go to Profile"
+                >
+                  ↑
+                </button>
                 <p className="about-kicker">FRIENDS</p>
                 <h2 className="about-title">
                   CROSS PATHS.
                   <br />
                   STAY CONNECTED.
                 </h2>
+                <button
+                  type="button"
+                  className="chapter-next"
+                  onClick={() => scrollToChapter("chatVisible")}
+                  aria-label="Go to Chats"
+                >
+                  ↓
+                </button>
               </div>
 
               <div ref={qrCopyRef} className="about-copy-state">
-                <p className="about-kicker">MY QR</p>
+                <button
+                  type="button"
+                  className="chapter-prev"
+                  onClick={() => scrollToChapter("friendsVisible")}
+                  aria-label="Go to Friends"
+                >
+                  ↑
+                </button>
+                <p className="about-kicker">CHAT</p>
                 <h2 className="about-title">
-                  MEET HERE.
+                  CHAT HERE.
                   <br />
                   STAY NEAR.
                 </h2>
+                <button
+                  type="button"
+                  className="chapter-next"
+                  onClick={() => scrollToChapter("releaseVisible")}
+                  aria-label="Go to Release"
+                >
+                  ↓
+                </button>
               </div>
 
               <div ref={releaseCopyRef} className="about-copy-state release-copy">
+                <button
+                  type="button"
+                  className="chapter-prev"
+                  onClick={() => scrollToChapter("chatVisible")}
+                  aria-label="Go to Chat"
+                >
+                  ↑
+                </button>
                 <p className="about-kicker">LAUNCHING IN</p>
                 <div className="release-countdown">
                   <div><strong>{number(time.days)}</strong><span>DAYS</span></div>
@@ -570,7 +766,11 @@ function App() {
               </div>
             </div>
 
-            <div className="phone-scene" aria-label="Near app preview">
+            <div
+              ref={phoneSceneRef}
+              className="phone-scene"
+              aria-label="Near app preview"
+            >
               <div ref={phoneRef} className="phone-3d">
                 <div className="phone-face phone-front">
                   <div className="phone-screen">
@@ -587,7 +787,7 @@ function App() {
                       <img src="https://pub-f87a061974ae427789e792fb6de0544d.r2.dev/near-friends.jpg" className="phone-screen-image" alt="Near friends" />
                     </div>
                     <div ref={qrScreenRef} className="phone-screen-state phone-qr">
-                      <img src="https://pub-f87a061974ae427789e792fb6de0544d.r2.dev/near-qr.jpg" className="phone-screen-image" alt="Near QR code" />
+                      <img src="https://pub-f87a061974ae427789e792fb6de0544d.r2.dev/near-chats.jpg" className="phone-screen-image" alt="Near QR code" />
                     </div>
                   </div>
                 </div>
@@ -629,9 +829,9 @@ function App() {
               </p>
 
               <p ref={qrDescriptionRef} className="about-description about-description-state">
-                Some connections happen in the moment. Share your personal QR code or
-                scan someone else's to find each other instantly on Near — no searching,
-                no usernames to remember.
+                Some connections deserve more than a moment. Chat with your friends, share 
+                your experiences, and stay connected wherever life takes you. Near keeps the 
+                conversation going, no matter the distance.
               </p>
 
               <div ref={releaseDescriptionRef} className="about-description-state release-availability">
@@ -646,11 +846,21 @@ function App() {
                     <span><strong>Google Play</strong></span>
                   </div>
                 </div>
+                <div className="release-legal">
+                  <a href="/privacy-policy">Privacy Policy</a>
+
+                  <span className="release-legal-dot" aria-hidden="true">
+                    ·
+                  </span>
+
+                  <a href="/delete-account">Delete Account</a>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
+      <PrivacyNotice />
     </main>
   );
 }
