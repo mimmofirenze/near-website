@@ -308,8 +308,121 @@ export function PrivacyPolicy() {
         </p>
       </section>
 
+
+<section id="child-safety">
+  <h2>13. Child Safety Standards</h2>
+
+  <p>
+    Near is committed to maintaining a safe environment for
+    all users and has a zero-tolerance policy toward child
+    sexual abuse and exploitation (CSAE), including child
+    sexual abuse material (CSAM).
+  </p>
+
+  <h3>Prohibited Content and Behavior</h3>
+  <p>
+    Near strictly prohibits any activity involving the
+    sexual abuse or exploitation of minors, including:
+  </p>
+
+  <ul>
+    <li>
+      Creating, uploading, sharing, distributing, or
+      requesting child sexual abuse material (CSAM).
+    </li>
+    <li>
+      Grooming, sexual solicitation, or attempting to
+      exploit minors.
+    </li>
+    <li>
+      Sexual harassment, coercion, sextortion, or
+      trafficking involving minors.
+    </li>
+    <li>
+      Using Near to facilitate, promote, or coordinate
+      child sexual abuse or exploitation.
+    </li>
+    <li>
+      Any other behavior that endangers the safety
+      or well-being of minors.
+    </li>
+  </ul>
+
+  <h3>Reporting Child Safety Concerns</h3>
+
+  <p>
+    Users can report suspected child sexual abuse,
+    exploitation, inappropriate behavior, or other
+    safety concerns through the Support feature
+    available within the Near application.
+  </p>
+
+  <p>
+    Reports can also be submitted directly to{" "}
+    <a href="mailto:support@app-near.me">
+      support@app-near.me
+    </a>.
+  </p>
+
+  <p>
+    We encourage users to provide relevant details
+    about the incident so that reports can be
+    properly assessed. Do not send or redistribute
+    suspected child sexual abuse material.
+  </p>
+
+  <h3>Enforcement and Response</h3>
+
+  <p>
+    Near treats reports involving potential child
+    sexual abuse or exploitation as a priority.
+    When violations are identified, appropriate
+    measures may include:
+  </p>
+
+  <ul>
+    <li>
+      Reviewing reported accounts and activities.
+    </li>
+    <li>
+      Removing prohibited content where technically
+      possible.
+    </li>
+    <li>
+      Restricting, suspending, or permanently
+      terminating accounts involved in violations.
+    </li>
+    <li>
+      Reporting suspected illegal activities to
+      appropriate authorities when required by law.
+    </li>
+  </ul>
+
+  <h3>Compliance With Child Safety Laws</h3>
+
+  <p>
+    Near is committed to complying with applicable
+    child protection and online safety laws.
+    We cooperate with relevant law enforcement
+    agencies and competent authorities in accordance
+    with applicable legal requirements.
+  </p>
+
+  <h3>Child Safety Contact</h3>
+
+  <p>
+    For questions regarding Near's child safety
+    standards, reporting procedures, or compliance,
+    contact our designated representative at{" "}
+    <a href="mailto:developer@kevincaulo.com">
+      developer@kevincaulo.com
+    </a>.
+  </p>
+</section>
+
+
       <section>
-        <h2>13. Changes to this policy</h2>
+        <h2>14. Changes to this policy</h2>
         <p>
           We may update this Privacy Policy when our features,
           practices, or legal obligations change. The latest
